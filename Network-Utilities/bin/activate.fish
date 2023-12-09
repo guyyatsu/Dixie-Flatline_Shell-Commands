@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/home/guyyatsu/Documents/Software/Network-Utilities"
+set -gx VIRTUAL_ENV "/home/guyyatsu/Documents/Software/Dixie-Flatline_Shell-Commands/Network-Utilities"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
