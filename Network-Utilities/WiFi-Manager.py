@@ -2,9 +2,13 @@
 """
 """
 
-import subprocess
+from subprocess import run
+from subprocess import Popen
+from subprocess import PIPE
+from subprocess import STDOUT
 
-#import pyautogui
+from pyautogui import hotkey
+
 #import tkinter as tk
 
 
