@@ -28,10 +28,16 @@ The list of commands enacted are as follows:
                       blocking rules placed upon the network hardware.
 """
 
-commands = { "SCAN":       "sudo iwctl station wlan0 scan",
-             "SELECT":     "sudo iwctl station wlan0 get-networks",
-             "CONNECT":    "sudo iwctl station wlan0 connect {}",
-             "REQUEST IP": "sudo dhcpcd"                            }
+# NOTE: These commands will probably only work on a Linux system.
+#       And not even every linux system, at that.
+commands = { "PING":           "ping -c1 -W2 {}",
+             "SCAN":           "sudo iwctl station wlan0 scan",
+             "SELECT":         "sudo iwctl station wlan0 get-networks",
+             "CONNECT":        "sudo iwctl station wlan0 connect {}",
+             "REQUEST IP":     "sudo dhcpcd",
+             "HARDWARE RESET": ( f"sudo rfkill unblock all; ",
+                                 f"sudo ip link set wlan0 down; ",
+                                 f"sudo ip link set wlan0 up"     )    }
 
 
 
