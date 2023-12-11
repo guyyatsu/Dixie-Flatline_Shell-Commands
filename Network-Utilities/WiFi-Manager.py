@@ -40,7 +40,13 @@ commands = { "PING":           "ping -c1 -W2 {}",
                                  f"sudo ip link set wlan0 up"     )    }
 
 
+# Attempt to connect to any previously connected networks if any are present.
+try:
+    run( commands["REQUEST IP"].split(),
+         stdout = PIPE, stderr = STDOUT  )
 
+    if run( commands["PING"],
+            stdout = PIPE, stderr = STDOUT ).returncode is not 0:
 
 # Scan for wifi access points around the local area.
 network_host_scan = subprocess.run( commands["SCAN"].split(),
@@ -48,16 +54,17 @@ network_host_scan = subprocess.run( commands["SCAN"].split(),
                                     stderr = subprocess.STDOUT )\
                               .returncode
 
+
+# Scan for wifi access points around the local area.
+# NOTE: This must be retried every time we recieve a non-zero exit status.
+network_host_scan = run( commands["SCAN"].split(),
+                         stdout = PIPE, stderr = STDOUT ).returncode
+
 # Gather a list of networks discovered during the scan.
-host_discovery_results = subprocess.Popen( commands["SELECT"].split(),
-                                           stdout = subprocess.PIPE,
-                                           stderr = subprocess.STDOUT     )\
-                                   .stdout\
-                                   .read()\
-                                   .decode()
-#results = ( host_discovery_results
-
-
+host_discovery_results = Popen( commands["SELECT"].split(),
+                                stdout = PIPE, stderr = STDOUT ).stdout\
+                                                                .read()\
+                                                                .decode()
 # Trim the whitespace lines from the formatted text results.
 results = host_discovery_results.split("\n")[4:]
 del results[-1]; del results[-1]
