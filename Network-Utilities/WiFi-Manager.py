@@ -48,11 +48,9 @@ try:
     if run( commands["PING"],
             stdout = PIPE, stderr = STDOUT ).returncode is not 0:
 
-# Scan for wifi access points around the local area.
-network_host_scan = subprocess.run( commands["SCAN"].split(),
-                                    stdout = subprocess.PIPE,
-                                    stderr = subprocess.STDOUT )\
-                              .returncode
+        # Turn the wifi card off then back on again.
+        hotkey("fn", "f5"); sleep(.5)
+        hotkey("fn", "f5")
 
 
 # Scan for wifi access points around the local area.
@@ -87,3 +85,27 @@ item in the list is going to be unicode or not.
 As for actually trimming the unicode off; we can just delete those items
 while iterating.
 """
+
+# NOTE: This only needs to run if we fail a pingscan.
+# Split each line along it's whitespace into tokens.
+items = []
+for item in results:
+    items.append(item.split())
+
+# Delete the first three tokens from item[0].
+del items[0][0:3]
+
+# Delete the token from every item.
+for item in range(0, len(items)):
+    del items[item][-1]
+
+"""
+I figured a solution; after a successful pingscan we're always going to delete
+three tokens from item[0].  So, we DON'T need to get crazy here with what we're
+doing; just store the tokens as a nested list and delete the first token from
+the first item three times.  EZPZ.
+"""
+for item in items:
+    print(item)
+
+
